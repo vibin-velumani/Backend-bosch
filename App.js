@@ -1,8 +1,9 @@
 const express = require("express")
 const app = express()
 require('dotenv').config()
-// const products=require("./Routes/Product")
 const Auth=require('./Controller/Auth')
+const Product=require('./Controller/Product')
+
 const mongoose=require('mongoose')
 require('./db')
 const cors=require('cors')
@@ -12,6 +13,7 @@ app.use(express.json())
 
 app.use('/auth',Auth)
 
+app.use('/product',Product)
 
 
 

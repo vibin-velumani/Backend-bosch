@@ -12,16 +12,25 @@ const productSchema=new mongoose.Schema(
        }
        ,
        desc:{
-        type:String
+        type:String,
+        required:true
        }
-       ,img:{
+       ,
+       preimg:{
         data:Buffer,
         contentType:String
        },
-       type:
+       category:
        {
         type:String,
         required:true
+       },
+       quantity:{
+        type:String,
+        required:true
+       },
+       stars:{
+        type:String,
        }
        
     }

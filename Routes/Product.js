@@ -1,30 +1,90 @@
 const express=require('express');
-const products = require('../Models/products');
-const router=express.Router()
+const db=require('../db')
 
-router.get('/',async(req,res)=>{
-     try{
-         const prods=await products.find()
-         res.json(prods)
-     
-        }
-     catch(err){
-        res.send("Something went wrong");
-     }
-})
-router.post('/',async(req,res)=>{
+const Product = require('../Models/products');
+
+exports.getallproducts=async(req,res)=>{
+ try{
+       
+     const products=await Product.find({});
+     console.log(res)
+     res.status(200).json({
+      status:"success",
+      data:{
+          message:"successfully got all questions",
+          products
+      }
+  });
+  return;
+ }catch(err)
+    {
+         res.status(500).send("Something went wrong")
+         return
+    }
+
+
+}
+
+exports.addproduct=async(req,res)=>{
     
-         const prod=new products({
-            name:req.body.name,
-            price:req.body.price
-         }) 
+         
          try{
+              const {name,price,quantity,category,desc}=req.body;
+             console.log("new product request");
+              const prod=new Product({
+               name,price,quantity,category,desc
+                          })
                  const a1=await prod.save()
-         res.json(a1)
+                 res.status(200).json({
+                  status: "success",
+                  data: {
+                      message: "Successfully Added product",
+                  }
+               })
           }
     catch(err)
     {
-         res.send("Something went wrong")
+         res.status(500).send("Something went wrong")
     }
-})
-module.exports=router;
+}
+
+exports.updateproduct=async(req,res)=>{
+    try{
+        const {name,price,quantity,category,desc,id}=req.body;
+         const prod=await Product.updateOne({_id:id},{$set:{name,price,quantity,category,desc}})
+         console.log(prod)
+           res.status(200).json({
+            status: "success",
+            data: {
+                message: "Successfully Updated Product",
+            }
+         })
+         return;
+    }
+catch(err)
+{
+   res.status(500).send("Something went wrong")
+}
+
+}
+
+exports.removeproduct=async(req,res)=>{
+    try{
+        const {id}=req.body;
+         const prod=await Product.deleteOne({_id:id})
+         
+    
+           res.status(200).json({
+            status: "success",
+            data: {
+                message: "Successfully Removed Product",
+            }
+         })
+         return;
+    }
+catch(err)
+{
+   res.status(500).send("Something went wrong")
+}
+
+}
