@@ -7,7 +7,6 @@ exports.getallproducts=async(req,res)=>{
  try{
        
      const products=await Product.find({});
-     console.log(res)
      res.status(200).json({
       status:"success",
       data:{
@@ -29,10 +28,9 @@ exports.addproduct=async(req,res)=>{
     
          
          try{
-              const {name,price,quantity,category,desc}=req.body;
-             console.log("new product request");
+              const {name,price,quantity,category,desc,preimg}=req.body;
               const prod=new Product({
-               name,price,quantity,category,desc
+               name,price,quantity,category,desc,preimg
                           })
                  const a1=await prod.save()
                  res.status(200).json({
@@ -52,7 +50,6 @@ exports.updateproduct=async(req,res)=>{
     try{
         const {name,price,quantity,category,desc,id}=req.body;
          const prod=await Product.updateOne({_id:id},{$set:{name,price,quantity,category,desc}})
-         console.log(prod)
            res.status(200).json({
             status: "success",
             data: {

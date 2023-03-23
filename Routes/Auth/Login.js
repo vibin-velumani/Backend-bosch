@@ -54,3 +54,54 @@ exports.logout=async(req,res)=>{
     res.status(400).send("some thing wrong")
   }
 }
+
+
+exports.getadmin=async(req,res)=>{
+    try
+    {
+        const data=await User.find({isAdmin:true});
+        console.log(data)
+        res.status(200).json({
+            status:"success",
+            details:data
+        })
+    }
+    catch(err)
+    {
+        res.status(500).send("Some thing went wrong in get admin");
+        console.log("Some thing went wrong in get admin");
+    }
+}
+
+exports.addadmin=async(req,res)=>{
+    try
+    {
+        const {email,status}=req.body
+        const data=await User.updateOne({email:email},{$set:{isAdmin:status}});
+        console.log("data : "+data)
+        res.status(200).json({
+            status:"success"
+        })
+    }
+    catch(err)
+    {
+        
+        res.status(500).send("Some thing went wrong in add admin");
+        console.log("Some thing went wrong in add admin");
+    }
+}
+
+exports.getdetails=async(req,res)=>{
+    try
+    {
+         const data=await User.findOne({user_id:req.body.id});
+         res.status(200).json({
+            status:"success",
+            details:data
+        })
+    }
+    catch(err)
+    {
+        res.status(500).send("Some thing went wrong in add admin");
+    }
+}

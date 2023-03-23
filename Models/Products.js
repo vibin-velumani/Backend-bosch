@@ -17,8 +17,7 @@ const productSchema=new mongoose.Schema(
        }
        ,
        preimg:{
-        data:Buffer,
-        contentType:String
+        type:String
        },
        category:
        {
