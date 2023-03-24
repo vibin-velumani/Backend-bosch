@@ -48,8 +48,8 @@ exports.addproduct=async(req,res)=>{
 
 exports.updateproduct=async(req,res)=>{
     try{
-        const {name,price,quantity,category,desc,id}=req.body;
-         const prod=await Product.updateOne({_id:id},{$set:{name,price,quantity,category,desc}})
+        const {name,price,quantity,category,desc,id,preimg}=req.body;
+         const prod=await Product.updateOne({_id:id},{$set:{name,price,quantity,category,desc,preimg}})
            res.status(200).json({
             status: "success",
             data: {

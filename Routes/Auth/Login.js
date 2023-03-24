@@ -3,6 +3,7 @@ const Register =require('../../Models/Registers')
 const bcrypt=require('bcrypt')
 const User=require('../../Models/Registers')
 const jwt=require('jsonwebtoken')
+const mongoose=require('mongoose')
 exports.login=async(req,res)=>{
     try{
         const {email,password}=req.body;
@@ -94,7 +95,8 @@ exports.addadmin=async(req,res)=>{
 exports.getdetails=async(req,res)=>{
     try
     {
-         const data=await User.findOne({user_id:req.body.id});
+        const {id}=req.body;
+         const data=await User.findOne({_id:id});
          res.status(200).json({
             status:"success",
             details:data
@@ -104,4 +106,146 @@ exports.getdetails=async(req,res)=>{
     {
         res.status(500).send("Some thing went wrong in add admin");
     }
+}
+exports.updateCart = async (req, res) => {
+    try {
+      const { id, cart } = req.body;
+      const user = await User.findById(id);
+  
+      if (!user) {
+        return res.status(404).json({ status: 'error', message: 'User not found' });
+      }
+      user.cart = cart;
+      await user.save();
+  
+      res.status(200).json({
+        status: 'success',
+        message: 'Cart updated successfully',
+        detials: user,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ status: 'error', message: 'Something went wrong' });
+    }
+  };
+
+  exports.addcart = async (req, res) => {
+    try {
+      const { id, item } = req.body;
+
+    console.log(item);
+      const user = await User.findOneAndUpdate(
+        { _id: id, "cart.productId": { $ne: item.productId } },
+        { $push: { cart: item } },
+        { new: true }
+      );
+  
+      if (!user) {
+        return res.status(404).json({ status: 'error', message: 'User not found' });
+      }
+  
+      if (user.cart.length === search.cart.length) {
+        return res.status(409).json({ status: 'error', message: 'Item already exists in cart' });
+      }
+  
+      res.status(200).json({
+        status: 'success',
+        message: 'Item added to cart successfully',
+        user: user,
+      });
+    } catch (err) {
+      res.status(500).json({ status: 'error', message: 'Something went wrong' });
+    }
+  };
+  exports.cleancart = async (req, res) => {
+    try {
+        const { id } = req.body;
+        console.log(id)
+        const user = await User.findOneAndUpdate(
+          { _id: id },
+          { $set: { cart: [] } },
+          { new: true }
+        );
+        console.log(user)
+        if (!user) {
+          return res.status(404).json({ status: 'error', message: 'User not found' });
+        }
+    
+        res.status(200).json({
+          status: 'success',
+          message: 'All items removed from cart successfully',
+          user: user,
+        });
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: 'error', message: 'Something went wrong' });
+      }
+  };
+exports.updatedetails=async(req,res)=>{
+  try {
+    const { id, upd } = req.body;
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      { $set:  upd  }
+    );
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({ status: 'error', message: 'User not found' });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Updated successfully',
+      details: user,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Something went wrong' });
+  }
+}
+
+exports.changepass=async(req,res)=>{
+  try{
+    const {id,oldpass,password}=req.body;
+    const userdata=await User.findOne({_id:id})
+    if(userdata===null)
+    {
+        res.status(400).send("Not Found")
+        return
+    }
+    const valid=await bcrypt.compare(oldpass,userdata.password)
+    if(valid===true)
+    {
+      const hashpassword=await bcrypt.hash(password,10);
+      const user = await User.findOneAndUpdate(
+        { _id: id },
+        { $set:  {password:hashpassword}  }
+      );
+  
+      if (!user) {
+        return res.status(404).json({ status: 'error', message: 'Some thing wrong internally ' });
+      }
+  
+      res.status(200).json({
+        status: 'success',
+        message: 'Updated successfully',
+        details: user,
+      });
+    }
+    else {
+        res.status(400).json({
+            status: "error",
+            data: {
+                message: "password dosen't match"
+            }
+        });
+        return;
+    }
+
+   }
+catch(err){
+    console.log(err)
+   res.status(500).send("Something went wrong");
+}
 }
