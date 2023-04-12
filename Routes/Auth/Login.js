@@ -168,7 +168,7 @@ exports.updateCart = async (req, res) => {
         console.log(user)
         if (!user) {
           return res.status(404).json({ status: 'error', message: 'User not found' });
-        }
+        } 
     
         res.status(200).json({
           status: 'success',
