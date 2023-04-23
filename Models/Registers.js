@@ -16,6 +16,9 @@ const cartSchema = new mongoose.Schema({
       type: Number,
       required: true,
       default: 1,
+    },
+    total:{
+      type:Number
     }
   });
 const orderSchema = new mongoose.Schema({
@@ -40,10 +43,6 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now,
-      },
-      total:{
-        type:Number,
-        required:true
       }
   });
 const registerSchema=new mongoose.Schema({
@@ -102,6 +101,12 @@ const registerSchema=new mongoose.Schema({
         require:false,
         default:false
     },
+    cartValue:{
+      type:String,
+      require:true,
+      default:0
+    }
+    ,
     orders: [orderSchema] ,// include orders as a property
 
     cart: [cartSchema]

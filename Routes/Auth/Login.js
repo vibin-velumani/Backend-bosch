@@ -109,15 +109,17 @@ exports.getdetails=async(req,res)=>{
 }
 exports.updateCart = async (req, res) => {
     try {
-      const { id, cart } = req.body;
+      const { id, cart,total } = req.body;
       const user = await User.findById(id);
-  
+      
+      const ud=await User.findOneAndUpdate({_id:id},{$set:{cartValue:total}})
       if (!user) {
         return res.status(404).json({ status: 'error', message: 'User not found' });
       }
       user.cart = cart;
       await user.save();
-  
+      const u = await User.findById(id);
+    console.log(u);
       res.status(200).json({
         status: 'success',
         message: 'Cart updated successfully',
@@ -138,22 +140,25 @@ exports.updateCart = async (req, res) => {
         { $push: { cart: item } },
         { new: true }
       );
-  
+       
       if (!user) {
-        return res.status(404).json({ status: 'error', message: 'User not found' });
+        res.status(404).json({ status: 'error', message: 'User not found' });
+        return;
       }
-  
+
       if (user.cart.length === search.cart.length) {
-        return res.status(409).json({ status: 'error', message: 'Item already exists in cart' });
+          res.status(200).json({ status: 'error', message: 'Item already exists in cart' });
+          return;
       }
   
       res.status(200).json({
         status: 'success',
         message: 'Item added to cart successfully',
-        user: user,
       });
-    } catch (err) {
-      res.status(500).json({ status: 'error', message: 'Something went wrong' });
+      return;
+    } 
+    catch (err) {
+      res.status(500).json({ status: 'error', message: 'Something went wrong',error:err });
     }
   };
   exports.cleancart = async (req, res) => {
@@ -165,6 +170,8 @@ exports.updateCart = async (req, res) => {
           { $set: { cart: [] } },
           { new: true }
         );
+        
+        await User.findById(id,{$set:{cartValue:0}})
         console.log(user)
         if (!user) {
           return res.status(404).json({ status: 'error', message: 'User not found' });
