@@ -249,7 +249,33 @@ exports.changepass=async(req,res)=>{
 
    }
 catch(err){
-    console.log(err)
    res.status(500).send("Something went wrong");
 }
+}
+
+exports.addaddress=async(req,res)=>{
+  try
+  {
+        const {id,item,deliveryChoice}=req.body;
+        const user = await User.findOneAndUpdate(
+          { _id: id } ,
+          { $push: { shipping: item } ,$set:{deliveryChoice}},
+          { new: true }
+        );
+        if (!user) {
+          res.status(404).json({ status: 'error', message: 'User not found' });
+          return;
+        }
+  
+        res.status(200).json({
+          status: 'success',
+          message: 'Address added successfully',
+        });
+        return;
+
+  }
+  catch(err)
+  {
+   res.status(500).send("Something went wrong");
+  }
 }

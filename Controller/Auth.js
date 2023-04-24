@@ -11,6 +11,7 @@ router.route('/addadmin').post(Login.addadmin)
 router.route('/userdetails').post(Login.getdetails)
 router.route('/updateDetails').post(Login.updatedetails)
 router.route('/changepass').post(Login.changepass)
+router.route('/addaddress').post(Login.addaddress)
 
 
 router.route('/updatecart').post(Login.updateCart)

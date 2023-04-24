@@ -51,6 +51,10 @@ zipcode:{
 type:String,
 require:false,
 default:""
+},name:{
+  type:String,
+require:false,
+default:""
 }
 })
 const orderSchema = new mongoose.Schema({
@@ -144,6 +148,11 @@ const registerSchema=new mongoose.Schema({
 
     cart: [cartSchema] ,
 
-    shipping:[shippingAddress]
+    shipping:[shippingAddress],
+    deliveryChoice:{
+      type:Number,
+      require:true,
+      default:-1
+    }
 })
 module.exports=mongoose.model('User',registerSchema);
