@@ -1,6 +1,6 @@
 const express=require('express');
 const db=require('../db')
-
+const User=require('../Models/Registers')
 const Product = require('../Models/products');
 
 exports.getallproducts=async(req,res)=>{
@@ -82,6 +82,25 @@ exports.removeproduct=async(req,res)=>{
 catch(err)
 {
    res.status(500).send("Something went wrong")
+}
+
+}
+
+
+exports.getcartdetails=async(req,res)=>
+{
+    try{
+        const {id}=req.body;
+         const u=await User.findOne({_id:id})    
+           res.status(200).json({
+            status: "success",
+            data:u
+         })
+         return;
+    }
+catch(err)
+{
+   res.status(500).json({data:"Something went wrong",err})
 }
 
 }

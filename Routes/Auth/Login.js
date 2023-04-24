@@ -119,11 +119,9 @@ exports.updateCart = async (req, res) => {
       user.cart = cart;
       await user.save();
       const u = await User.findById(id);
-    console.log(u);
       res.status(200).json({
         status: 'success',
         message: 'Cart updated successfully',
-        detials: user,
       });
     } catch (err) {
       console.error(err);

@@ -21,6 +21,36 @@ const cartSchema = new mongoose.Schema({
       type:Number
     }
   });
+const shippingAddress=new mongoose.Schema({
+  ph:{
+    type:String,
+    require:false,
+    default:""
+}
+,address:{
+    type:String,
+    require:false,
+    default:""
+},state:{
+  type:String,
+  require:false,
+  default:""
+},city:{
+type:String,
+require:false,
+default:""
+},
+landmark:{
+type:String,
+require:false,
+default:""
+},
+zipcode:{
+type:String,
+require:false,
+default:""
+}
+})
 const orderSchema = new mongoose.Schema({
     productId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -109,6 +139,8 @@ const registerSchema=new mongoose.Schema({
     ,
     orders: [orderSchema] ,// include orders as a property
 
-    cart: [cartSchema]
+    cart: [cartSchema] ,
+
+    shipping:[shippingAddress]
 })
 module.exports=mongoose.model('User',registerSchema);
