@@ -103,3 +103,21 @@ catch(err)
 }
 
 }
+
+exports.getproductdetails=async(req,res)=>{
+    try{
+
+        const {pid}=req.body;
+        const p=await Product.findOne({_id:pid});
+        res.status(200).json({
+            data:p
+        })
+
+    }
+    catch(err)
+    {
+        res.status(500).json({
+            err
+        })
+    }
+}

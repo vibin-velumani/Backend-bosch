@@ -19,6 +19,8 @@ const cartSchema = new mongoose.Schema({
     },
     total:{
       type:Number
+    },preimg:{
+      type:String
     }
   });
 const shippingAddress=new mongoose.Schema({
@@ -61,6 +63,7 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    
     quantity: {
       type: Number,
       required: true,
