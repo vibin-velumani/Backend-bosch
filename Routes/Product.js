@@ -1,8 +1,7 @@
 const express=require('express');
 const db=require('../db')
 const User=require('../Models/Registers')
-const Product = require('../Models/products');
-
+const Product = require('../Models/Products');
 exports.getallproducts=async(req,res)=>{
  try{
        
