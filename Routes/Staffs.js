@@ -8,7 +8,7 @@ exports.addstaff=async(req,res)=>{
     
      try{
          const {name,email,ph,DOB,address,DOJ,currsal}=req.body;
-         console.log(name)
+         console.log(DOB)
          const ad_stf=new stf({
             sname:name,email,ph,DOB,address,DOJ,currsal
                      })
@@ -27,5 +27,20 @@ catch(err)
 }
 }
 
+exports.viewstaff=async(req,res)=>{
+    
+    try{
+        const staff=await stf.find({});
+           res.status(200).json({
+            status: "success",
+            data: staff
+         })
+    }
+catch(err)
+{
+   console.log(err)
+   res.status(500).json({err})
+}
+}
 
 

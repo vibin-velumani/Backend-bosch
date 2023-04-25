@@ -4,6 +4,7 @@ const Staffs=require('../Routes/Staffs')
 
 router.route('/addstaff').post(Staffs.addstaff)
 
+router.route('/viewstaff').post(Staffs.viewstaff)
 
 
 

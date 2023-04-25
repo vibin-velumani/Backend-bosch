@@ -144,7 +144,7 @@ const registerSchema=new mongoose.Schema({
         default:false
     },
     cartValue:{
-      type:String,
+      type:Number,
       require:true,
       default:0
     }

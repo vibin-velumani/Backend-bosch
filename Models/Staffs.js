@@ -17,7 +17,7 @@ const staffSchema=new mongoose.Schema(
             },
             DOB:{
              type:Date,
-              require:false
+              require:true
            },
            address:{
             type:String,
