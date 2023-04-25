@@ -135,7 +135,7 @@ exports.updateCart = async (req, res) => {
      console.log(item)
       const user = await User.findOneAndUpdate(
         { _id: id, "cart.productId": { $ne: item.productId } },
-        { $push: { cart: item } },
+        { $push: { cart: item },$inc:{cartValue:item.price} },
         { new: true }
       );
        
