@@ -3,6 +3,8 @@ const app = express()
 require('dotenv').config()
 const Auth=require('./Controller/Auth')
 const Product=require('./Controller/Product')
+const Offers=require('./Controller/Offers')
+const Staffs=require('./Controller/Staffs')
 const bodyParser=require('body-parser')
 const mongoose=require('mongoose')
 require('./db')
@@ -15,8 +17,8 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use('/auth',Auth)
 
 app.use('/product',Product)
-
-
+app.use('/offers',Offers)
+app.use('/staff',Staffs)
 
 
 
