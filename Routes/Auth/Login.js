@@ -119,11 +119,9 @@ exports.updateCart = async (req, res) => {
       user.cart = cart;
       await user.save();
       const u = await User.findById(id);
-    console.log(u);
       res.status(200).json({
         status: 'success',
         message: 'Cart updated successfully',
-        detials: user,
       });
     } catch (err) {
       console.error(err);
@@ -134,10 +132,10 @@ exports.updateCart = async (req, res) => {
   exports.addcart = async (req, res) => {
     try {
       const { id, item } = req.body;
-
+     console.log(item)
       const user = await User.findOneAndUpdate(
         { _id: id, "cart.productId": { $ne: item.productId } },
-        { $push: { cart: item } },
+        { $push: { cart: item },$inc:{cartValue:item.price} },
         { new: true }
       );
        
@@ -251,7 +249,33 @@ exports.changepass=async(req,res)=>{
 
    }
 catch(err){
-    console.log(err)
    res.status(500).send("Something went wrong");
 }
+}
+
+exports.addaddress=async(req,res)=>{
+  try
+  {
+        const {id,item,deliveryChoice}=req.body;
+        const user = await User.findOneAndUpdate(
+          { _id: id } ,
+          { $push: { shipping: item } ,$set:{deliveryChoice}},
+          { new: true }
+        );
+        if (!user) {
+          res.status(404).json({ status: 'error', message: 'User not found' });
+          return;
+        }
+  
+        res.status(200).json({
+          status: 'success',
+          message: 'Address added successfully',
+        });
+        return;
+
+  }
+  catch(err)
+  {
+   res.status(500).send("Something went wrong");
+  }
 }

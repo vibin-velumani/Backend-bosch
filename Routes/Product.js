@@ -1,8 +1,7 @@
 const express=require('express');
 const db=require('../db')
-
-const Product = require('../Models/products');
-
+const User=require('../Models/Registers')
+const Product = require('../Models/Products');
 exports.getallproducts=async(req,res)=>{
  try{
        
@@ -84,4 +83,41 @@ catch(err)
    res.status(500).send("Something went wrong")
 }
 
+}
+
+
+exports.getcartdetails=async(req,res)=>
+{
+    try{
+        const {id}=req.body;
+         const u=await User.findOne({_id:id})    
+           res.status(200).json({
+            status: "success",
+            data:u
+         })
+         return;
+    }
+catch(err)
+{
+   res.status(500).json({data:"Something went wrong",err})
+}
+
+}
+
+exports.getproductdetails=async(req,res)=>{
+    try{
+
+        const {pid}=req.body;
+        const p=await Product.findOne({_id:pid});
+        res.status(200).json({
+            data:p
+        })
+
+    }
+    catch(err)
+    {
+        res.status(500).json({
+            err
+        })
+    }
 }
