@@ -13,8 +13,13 @@ require('./db')
 app.use(express.static('Public'))
 const cors=require('cors')
 const cookieParser = require("cookie-parser")
-app.use(cors())
-app.use(express.json())
+app.use(
+    cors({
+      credentials: true,
+      origin: ["https://crystal-parts.web.app/", "https://crystal-parts.firebaseapp.com/", "http://localhost:3000", "https://crystalparts.rido.live"],
+    })
+  );
+  app.use(express.json())
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use('/auth',Auth)
