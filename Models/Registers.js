@@ -83,7 +83,7 @@ const orderSchema = new mongoose.Schema({
     orderstatus:{
       type:String,
       require:true,
-      default:"pending"
+      default:"Processing"
     }
     
   });

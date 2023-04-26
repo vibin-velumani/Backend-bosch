@@ -79,6 +79,11 @@ const orderSchema = new mongoose.Schema({
       type:String,
       require:true,
       default:"COD"
+    },
+    orderstatus:{
+      type:String,
+      require:true,
+      default:"Processing"
     }
     
   });

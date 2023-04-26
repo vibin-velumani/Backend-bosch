@@ -46,3 +46,17 @@ exports.allorders=async(req,res)=>{
       })
   }
 }
+exports.update=async(req,res)=>{
+  try{
+    const {id,orderstatus}=req.body;
+         const userdata=await Order.findOneAndUpdate({_id:id},{$set:{orderstatus}});
+         
+         res.json({status:"success"})
+  }
+  catch(err)
+  {
+      res.json({
+          err
+      })
+  }
+}
