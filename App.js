@@ -10,7 +10,7 @@ const Staffs=require('./Controller/Staffs')
 const bodyParser=require('body-parser')
 const mongoose=require('mongoose')
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://crystal-parts.web.app');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
