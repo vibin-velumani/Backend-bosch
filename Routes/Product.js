@@ -27,11 +27,24 @@ exports.addproduct=async(req,res)=>{
     
          
          try{
-              const {name,price,quantity,category,desc,preimg}=req.body;
+              const {name,price,quantity,category,desc,preimg,offer,offerdd,offerper,offerduetime}=req.body;
+              if(offer)
+              {
+                
               const prod=new Product({
-               name,price,quantity,category,desc,preimg
+               name,price,quantity,category,desc,preimg,offer,offerdd,offerper,offerduetime
                           })
                  const a1=await prod.save()
+            
+                }
+                else
+                {
+                    
+              const prod=new Product({
+                name,price,quantity,category,desc,preimg,offer
+                           })
+                  const a1=await prod.save()
+                }
                  res.status(200).json({
                   status: "success",
                   data: {
@@ -47,9 +60,16 @@ exports.addproduct=async(req,res)=>{
 
 exports.updateproduct=async(req,res)=>{
     try{
-        const {name,price,quantity,category,desc,id,preimg}=req.body;
-         const prod=await Product.updateOne({_id:id},{$set:{name,price,quantity,category,desc,preimg}})
-           res.status(200).json({
+        const {name,price,quantity,category,desc,id,preimg,offer,offerdd,offerper,offerduetime}=req.body;
+        if(offer)
+        {
+         const prod=await Product.updateOne({_id:id},{$set:{name,price,quantity,category,desc,preimg,offer,offerdd,offerper,offerduetime}})
+        }
+        else
+        {
+            const prod=await Product.updateOne({_id:id},{$set:{name,price,quantity,category,desc,preimg,offer}})
+        }
+         res.status(200).json({
             status: "success",
             data: {
                 message: "Successfully Updated Product",
@@ -121,3 +141,20 @@ exports.getproductdetails=async(req,res)=>{
         })
     }
 }
+exports.offer=async(req,res)=>{
+    try{
+          
+        const products=await Product.find({offer:true});
+        res.status(200).json({
+         status:"success",
+         data:products
+     });
+     return;
+    }catch(err)
+       {
+            res.status(500).send("Something went wrong")
+            return
+       }
+   
+   
+   }

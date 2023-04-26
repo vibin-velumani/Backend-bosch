@@ -132,10 +132,11 @@ exports.updateCart = async (req, res) => {
   exports.addcart = async (req, res) => {
     try {
       const { id, item } = req.body;
-     console.log(item.price);
-      const user = await User.findOneAndUpdate(
+     
+     const u=await User.findOne({_id:id});
+     const user = await User.findOneAndUpdate(
         { _id: id, "cart.productId": { $ne: item.productId } },
-        { $push: { cart: item },$inc:{cartValue:item.price} },
+        { $push: { cart: item },$set:{cartValue:item.price+u.cartValue} },
         { new: true }
       );
        

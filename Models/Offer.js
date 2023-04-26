@@ -20,7 +20,16 @@ const offerSchema=new mongoose.Schema(
        offerdueTime:{
         type:Number,
         
-       }
+       },
+       price:{
+        type:Number,
+        required:true
+       },
+       quantity:
+       {
+        type:Number,
+        required:true
+       },
     }
 )
 module.exports=mongoose.model('Offers',offerSchema)

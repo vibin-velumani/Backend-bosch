@@ -30,6 +30,22 @@ const productSchema=new mongoose.Schema(
        },
        stars:{
         type:String,
+       },
+       offer:{
+        type:Boolean,
+        require:true,
+        default:false
+       },
+       offerdd:{
+        type:Date,
+       }
+       ,
+       offerper:{
+        type:Number,
+       }
+       ,
+       offerdueTime:{
+        type:Number,
        }
        
     }
