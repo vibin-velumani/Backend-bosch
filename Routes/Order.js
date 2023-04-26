@@ -33,3 +33,16 @@ exports.placeorder=async(req,res)=>{
         })
     }
 }
+exports.allorders=async(req,res)=>{
+  try{
+         const userdata=await Order.find({});
+         
+         res.json({data:userdata})
+  }
+  catch(err)
+  {
+      res.json({
+          err
+      })
+  }
+}
