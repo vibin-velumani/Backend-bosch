@@ -8,9 +8,9 @@ exports.placeorder=async(req,res)=>{
     try{
            const {uid,payment,address,value}=req.body;
            const userdata=await User.findOne({_id:uid});
-           console.log(value);
            if(payment=="COD")
            {
+        
              const newOrder={
                shipping:address,
                cart:userdata.cart,
@@ -58,5 +58,35 @@ exports.update=async(req,res)=>{
       res.json({
           err
       })
+  }
+}
+
+
+exports.findOrderCount = async (req, res) => {
+  try {
+    const result = await Order.aggregate([
+      {
+        $group: {
+          _id: "$shipping.state",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    const result2 = await Order.aggregate([
+      {
+        $unwind: "$cart"
+      },
+      {
+        $group: {
+          _id: "$cart.category",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    res.json({data:result,data3:result2});
+  } catch (err) {
+    res.json({
+      err
+    })
   }
 }
