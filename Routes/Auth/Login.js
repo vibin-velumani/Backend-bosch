@@ -110,6 +110,7 @@ exports.getdetails=async(req,res)=>{
 exports.updateCart = async (req, res) => {
     try {
       const { id, cart,total } = req.body;
+      console.log(id);
       const user = await User.findById(id);
       
       const ud=await User.findOneAndUpdate({_id:id},{$set:{cartValue:total}})
@@ -118,14 +119,13 @@ exports.updateCart = async (req, res) => {
       }
       user.cart = cart;
       await user.save();
-      const u = await User.findById(id);
       res.status(200).json({
         status: 'success',
         message: 'Cart updated successfully',
       });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ status: 'error', message: 'Something went wrong' });
+      res.status(500).json({ status: 'error', message: err });
     }
   };
 

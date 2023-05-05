@@ -3,14 +3,22 @@ const db=require('../db')
 
 const Order=require("../Models/Order")
 const User=require('../Models/Registers')
+const Product = require('../Models/Products');
 
 exports.placeorder=async(req,res)=>{
     try{
            const {uid,payment,address,value}=req.body;
            const userdata=await User.findOne({_id:uid});
+           
            if(payment=="COD")
            {
         
+
+            for (const cartItem of userdata.cart) {
+              const productId = cartItem.productId;
+              const quantity = cartItem.quantity;
+              await Product.findOneAndUpdate({ _id: productId }, { $inc: { quantity: -quantity } });
+            }
              const newOrder={
                shipping:address,
                cart:userdata.cart,
@@ -90,3 +98,28 @@ exports.findOrderCount = async (req, res) => {
     })
   }
 }
+
+exports.orderDetails = async (req, res) => {
+  try {
+    const result = await Order.find({});
+    const result1 = await Order.find({orderstatus:"Delivered"});
+    const users=await User.find({});
+
+    var revenue=0;
+    result.map((ord)=>{
+      const offerDate = new Date(ord.purchaseDate);
+              const now = new Date();
+              const diff = now.getDate()-offerDate.getDate();
+      if(diff<=31)
+      {
+        revenue+=ord.cartValue;
+      }
+    })
+    res.json({total:result.length,delivered:result1.length,usercount:users.length,revenue});
+  } catch (err) {
+    res.json({
+      err
+    })
+  }
+}
+

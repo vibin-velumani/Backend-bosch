@@ -24,7 +24,8 @@ const cartSchema = new mongoose.Schema({
     } ,category:
     {
      type:String,
-     required:true
+     required:true,
+     default:"Electronics"
     },
   });
 const shippingAddress=new mongoose.Schema({
@@ -88,7 +89,13 @@ const orderSchema = new mongoose.Schema({
       type:String,
       require:true,
       default:"Processing"
-    }
+    },
+    category:
+    {
+     type:String,
+     required:true,
+     default:"Electronics"
+    },
     
   });
 const registerSchema=new mongoose.Schema({
