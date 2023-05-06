@@ -17,7 +17,7 @@ const offerSchema=new mongoose.Schema(
        }
        ,
        
-       offerdueTime:{
+       offerduetime:{
         type:Number,
         
        },

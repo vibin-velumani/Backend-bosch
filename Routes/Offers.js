@@ -7,7 +7,7 @@ exports.addoffers=async(req,res)=>{
     
      try{
          const {name,offPer,offerdd,offerduetime}=req.body;
-         console.log(offPer)
+         console.log("working :"+offerduetime)
          const off=new Offer({
             pname:name,offerper:offPer,offerdd,offerduetime
                      })
