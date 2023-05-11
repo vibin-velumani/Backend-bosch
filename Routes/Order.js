@@ -1,15 +1,55 @@
 const express=require('express');
 const db=require('../db')
-
+const nodemailer=require("nodemailer")
 const Order=require("../Models/Order")
 const User=require('../Models/Registers')
 const Product = require('../Models/Products');
+function sendmail(reciver, content) {
+  var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+          user: 'agenmaruthi@gmail.com',
+          pass: 'wuedwzppvsbrsamc'
+      }
+  });
+
+  var mailOptions = {
+      from: 'agenmaruthi@gmail.com',
+      to: reciver,
+      subject: 'Your Order Placed Successfully',
+      html: content
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+          console.log(error);
+      } else {
+          console.log('Email sent: ' + info.response);
+      }
+  });
+}
 
 exports.placeorder=async(req,res)=>{
     try{
            const {uid,payment,address,value}=req.body;
            const userdata=await User.findOne({_id:uid});
-           
+           const con = `
+<html>
+  <body>
+    <p>Dear ${userdata.name},</p>
+    <p>Thank you for placing an order with Crystal Parts.</p>
+    <p>Your order details:</p>
+    <ul>
+      <li>Product: ${userdata.cart[0].productname}</li>
+      <li>Price: ${userdata.cart[0].price}</li>
+      <li>Quantity: ${userdata.cart[0].quantity}</li>
+      <li>Total: ${userdata.cartValue}</li>
+    </ul>
+    <p>Thank you for shopping with us!</p>
+  </body>
+</html>
+`;
+
            if(payment=="COD")
            {
         
@@ -32,6 +72,7 @@ exports.placeorder=async(req,res)=>{
              })
              const re=newSch.save();
            }
+           sendmail(userdata.email,con);
            res.json({data:"success"})
     }
     catch(err)
